@@ -12,6 +12,7 @@ pandas
 collections
 You can install them using pip:
 
+
 Bash
 
 pip install pandas collections
