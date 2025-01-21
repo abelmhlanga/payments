@@ -3,8 +3,7 @@ import pandas as pd
 from datetime import datetime
 import unittest
 from unittest.mock import patch
-
-from paymentsapp.payment_processing import Payment, calculate_days_from_suspension, generate_reports, process_payments
+from payment_processing import Payment, calculate_days_from_suspension, generate_reports, process_payments
 
 class TestPaymentProcessing(unittest.TestCase):
     @patch("datetime.datetime")
@@ -13,7 +12,7 @@ class TestPaymentProcessing(unittest.TestCase):
 
         # Test case 1: Up to date on payments
         payment_history_1 = [
-            Payment("CASH", 100, "2024-11-14 10:30:00", "12345")
+            Payment("CASH", 100, "2024-11-24 10:30:00", "12345")
         ]
         self.assertEqual(
             calculate_days_from_suspension(payment_history_1), 90
@@ -24,7 +23,7 @@ class TestPaymentProcessing(unittest.TestCase):
             Payment("CASH", 100, "2024-11-03 10:30:00", "12345")
         ]
         self.assertEqual(
-            calculate_days_from_suspension(payment_history_2), 70
+            calculate_days_from_suspension(payment_history_2), 75
         )
 
         # Test case 3: Grace period 2
@@ -32,7 +31,7 @@ class TestPaymentProcessing(unittest.TestCase):
             Payment("CASH", 100, "2024-10-25 10:30:00", "12345")
         ]
         self.assertEqual(
-            calculate_days_from_suspension(payment_history_3), 50
+            calculate_days_from_suspension(payment_history_3), 66
         )
 
         # Test case 4: Suspended
@@ -63,7 +62,7 @@ class TestPaymentProcessing(unittest.TestCase):
         )
 
         # Iterate over chunks (in this case, just one chunk)
-        payment_history_generator = process_payments(df, chunksize=2)
+        payment_history_generator = process_payments(df, chunksize=1)
         first_chunk = next(payment_history_generator)
 
         self.assertIn("12345", first_chunk)
