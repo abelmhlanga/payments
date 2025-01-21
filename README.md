@@ -1,2 +1,2 @@
 Open paymentsapp
-Open readme.md and follow tthe instructions
+Open readme.md and follow the instructions
